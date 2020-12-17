@@ -7,6 +7,9 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const PORT = process.env.PORT || 8000
 
+// Import main controller
+const users = require('./controllers/users')
+
 // Middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
@@ -17,7 +20,8 @@ app.get('/', (req, res) => {
     res.status(200).json({message: 'Smile, you are being watched by the backend engineering team!'})
 })
 
-const users = require('./controllers/users')
+// Use route
+app.use('/controllers/users', users)
 
 // Listen
 app.listen(PORT, () => {
