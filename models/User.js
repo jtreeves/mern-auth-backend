@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 // Create User Schema
-const userSchma = new Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         required: true
