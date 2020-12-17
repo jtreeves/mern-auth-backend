@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 // Models
-const User = require('../models/User')
+const db = require('../models')
 
 // GET route for users/test (Public)
 router.get('/test', (req, res) => {
@@ -16,8 +16,11 @@ router.get('/test', (req, res) => {
 
 // POST route for users/register (Public)
 router.post('/register', (req, res) => {
+    // Troubleshooting
+    console.log('INSIDE REGISTER')
+    console.log(req)
     // Find user by email
-    User
+    db.User
         .findOne({email: req.body.email})
         .then(user => {
             // If email already exists, send 400 response
@@ -25,7 +28,7 @@ router.post('/register', (req, res) => {
                 return res.status(400).json({msg: 'Email already exists'})
             } else {
                 // Create a new user
-                const newUser = new User({
+                const newUser = new db.User({
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password
