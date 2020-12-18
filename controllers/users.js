@@ -5,6 +5,7 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
+const JWT_SECRET = process.env.JWT_SECRET
 
 // Models
 const db = require('../models')
@@ -50,6 +51,46 @@ router.post('/register', (req, res) => {
                             })
                     })
                 })
+            }
+        })
+})
+
+// POST route for users/login (Public)
+router.post('/login', (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+    // Find a user via email
+    db.User
+        .findOne({email})
+        .then(user => {
+            // If there is not a user
+            if (!user) {
+                res.status(400).json({msg: 'User not found'})
+            } else {
+                // If there is a user in the database
+                bcrypt
+                    .compare(password, user.password)
+                    .then(isMatch => {
+                        // Check password for match
+                        if (isMatch) {
+                            // If user match, send a JSON Web Token
+                            // Create a token payload
+                            const payload = {
+                                id: user.id,
+                                email: user.email,
+                                name: user.name
+                            }
+                            // Sign token
+                            jwt.sign(payload, JWT_SECRET, {expiresIn: '1h'}, (error, token) => {
+                                res.json({
+                                    success: true,
+                                    token: `Bearer ${token}`
+                                })
+                            })
+                        } else {
+                            return res.status(400).json({msg: 'Email or password is incorrect'})
+                        }
+                    })
             }
         })
 })
