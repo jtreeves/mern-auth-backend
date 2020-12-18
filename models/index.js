@@ -8,11 +8,8 @@ mongoose.connect(process.env.MONGO_URI, {
     useFindAndModify: true
 })
 
-console.log(process.env.MONGO_URI)
-
 // Set database with mongoose connection object
 const db = mongoose.connection
-console.log(db)
 
 // Set up an event listener that will fire once the connection opens for the database
 // Log to the terminal what host and port we are on
