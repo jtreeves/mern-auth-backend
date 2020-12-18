@@ -63,6 +63,7 @@ router.post('/login', (req, res) => {
     db.User
         .findOne({email})
         .then(user => {
+            console.log(`USER: ${user}`)
             // If there is not a user
             if (!user) {
                 res.status(400).json({msg: 'User not found'})
@@ -71,6 +72,7 @@ router.post('/login', (req, res) => {
                 bcrypt
                     .compare(password, user.password)
                     .then(isMatch => {
+                        console.log(`ISMATCH: ${isMatch}`)
                         // Check password for match
                         if (isMatch) {
                             // If user match, send a JSON Web Token
@@ -94,5 +96,7 @@ router.post('/login', (req, res) => {
             }
         })
 })
+
+
 
 module.exports = router
