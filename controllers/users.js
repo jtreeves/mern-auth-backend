@@ -1,14 +1,18 @@
 // Import external dependencies
 require('dotenv').config()
 const express = require('express')
-const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
-const JWT_SECRET = process.env.JWT_SECRET
 
 // Import internal models
 const db = require('../models')
+
+// Create router
+const router = express.Router()
+
+// Create JSON web token
+const JWT_SECRET = process.env.JWT_SECRET
 
 // Create GET route for users/test (Public)
 router.get('/test', (req, res) => {
