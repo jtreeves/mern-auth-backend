@@ -19,8 +19,8 @@ router.get('/test', (req, res) => {
     res.json({msg: 'Viewing the test page for the backend of a MERN app'})
 })
 
-// Create POST route for users/register (Public)
-router.post('/register', (req, res) => {
+// Create POST route for users/signup (Public)
+router.post('/signup', (req, res) => {
     db.User
         // Find user by email
         .findOne({email: req.body.email})
