@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGO_URI, {
     useFindAndModify: true
 })
 
-// Set database with mongoose connection object
+// Set database with Mongoose connection object
 const db = mongoose.connection
 
 // Create event listener to fire when the connection opens
