@@ -16,6 +16,7 @@ app.use('/controllers/users', users)
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use(passport.initialize())
 
 // Get home route
 app.get('/', (req, res) => {
