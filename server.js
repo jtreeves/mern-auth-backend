@@ -13,6 +13,7 @@ const users = require('./controllers/users')
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use(passport.initialize())
 
 // Use internal controller
 app.use('/controllers/users', users)
