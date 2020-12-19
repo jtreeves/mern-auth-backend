@@ -1,6 +1,4 @@
-// TEST
-
-// Imports
+// Import external dependencies
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -9,20 +7,20 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const PORT = process.env.PORT || 8000
 
-// Import main controller
+// Import internal controller
 const users = require('./controllers/users')
 
-// Middleware
+// Use middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-// Routes
+// Get home route
 app.get('/', (req, res) => {
-    res.status(200).json({message: 'Smile, you are being watched by the backend engineering team!'})
+    res.status(200).json({message: 'Viewing the backend of a MERN app'})
 })
 
-// Use route
+// Use controller
 app.use('/controllers/users', users)
 
 // Listen
