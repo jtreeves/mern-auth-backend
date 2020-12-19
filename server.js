@@ -9,6 +9,9 @@ require('./config/passport')(passport)
 // Import internal controller
 const users = require('./controllers/users')
 
+// Use controller
+app.use('/controllers/users', users)
+
 // Use middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
@@ -18,9 +21,6 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.status(200).json({message: 'Viewing the backend of a MERN app'})
 })
-
-// Use controller
-app.use('/controllers/users', users)
 
 // Create port
 const PORT = process.env.PORT || 8000
