@@ -11,7 +11,7 @@ const db = require('../models')
 // Create router
 const router = express.Router()
 
-// Create JSON web token secret
+// Create JSON web token
 const JWT_SECRET = process.env.JWT_SECRET
 
 // Create GET route for controllers/users/test (Public)
@@ -19,8 +19,8 @@ router.get('/test', (req, res) => {
     res.json({msg: 'Viewing the test page for the backend of a MERN app'})
 })
 
-// Create POST route for controllers/users/register (Public)
-router.post('/register', (req, res) => {
+// Create POST route for controllers/users/signup (Public)
+router.post('/signup', (req, res) => {
     db.User
         // Find user by email
         .findOne({email: req.body.email})
@@ -68,7 +68,7 @@ router.post('/login', (req, res) => {
         .findOne({email})
         .then(user => {
             if (!user) {
-                // Send 400 response if there is no user
+                // Send 400 response if user does not exist
                 res.status(400).json({msg: 'User not found'})
             } else {
                 // Log in user if user exists

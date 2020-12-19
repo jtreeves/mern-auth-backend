@@ -12,7 +12,7 @@ const options = {}
 options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 options.secretOrKey = process.env.JWT_SECRET
 
-// Export anonymous function upon creation
+// Export anonymous function upon its creation
 module.exports = (passport) => {
     passport.use(new JwtStrategy(options, (jwt_payload, done) => {
         User
