@@ -9,12 +9,12 @@ require('./config/passport')(passport)
 // Import internal controller
 const users = require('./controllers/users')
 
-// Use middleware
+// Use external middleware
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-// Use controller
+// Use internal controller
 app.use('/controllers/users', users)
 
 // Get home route
