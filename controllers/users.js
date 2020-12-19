@@ -73,6 +73,7 @@ router.post('/login', (req, res) => {
             } else {
                 // Log in user if user exists
                 bcrypt
+                    // Check password for match
                     .compare(password, user.password)
                     .then(isMatch => {
                         if (isMatch) {
