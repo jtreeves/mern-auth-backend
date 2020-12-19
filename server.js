@@ -19,13 +19,13 @@ app.use(express.json())
 
 // Get home route
 app.get('/', (req, res) => {
-    res.status(200).json({message: 'Viewing the backend of a MERN app'})
+    res.status(200).json({msg: 'Viewing the backend of a MERN app'})
 })
 
 // Create port
 const PORT = process.env.PORT || 8000
 
-// Listen
+// Listen on port
 app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`)
 })

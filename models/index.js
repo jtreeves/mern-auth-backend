@@ -1,8 +1,8 @@
-// Imports
+// Import external dependencies
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-// Set up MongoDB connection
+// Establish MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -12,14 +12,17 @@ mongoose.connect(process.env.MONGO_URI, {
 // Set database with mongoose connection object
 const db = mongoose.connection
 
-// Set up an event listener that will fire once the connection opens for the database
+// Create event listener to fire when the connection opens
 db.once('open', () => {
-    // Log to the terminal what host and port we are on
-    console.log(`Connected to MongoDB at ${db.host} on ${db.port}`)
+    // Log to the terminal the host and port of the database
+    console.log(`Connecting to MongoDB at ${db.host} on ${db.port}`)
 })
 
+// Create event listener to fire if an error occurs
 db.on('error', () => {
-    console.log(`Database error\n ${error}`)
+    // Log to the terminal any database errors
+    console.log(`DATABASE ERROR: ${error}`)
 })
 
+// Require and export User
 module.exports.User = require('./User')
