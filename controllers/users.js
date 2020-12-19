@@ -1,4 +1,4 @@
-// Imports
+// Import external dependencies
 require('dotenv').config()
 const express = require('express')
 const router = express.Router()
@@ -7,19 +7,16 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const JWT_SECRET = process.env.JWT_SECRET
 
-// Models
+// Import internal models
 const db = require('../models')
 
-// GET route for users/test (Public)
+// Create GET route for users/test (Public)
 router.get('/test', (req, res) => {
     res.json({msg: 'User endpoint OK!'})
 })
 
-// POST route for users/register (Public)
+// Create POST route for users/register (Public)
 router.post('/register', (req, res) => {
-    // Troubleshooting
-    console.log('INSIDE REGISTER')
-    console.log(req)
     // Find user by email
     db.User
         .findOne({email: req.body.email})
@@ -55,7 +52,7 @@ router.post('/register', (req, res) => {
         })
 })
 
-// POST route for users/login (Public)
+// Create POST route for users/login (Public)
 router.post('/login', (req, res) => {
     const email = req.body.email
     const password = req.body.password
@@ -97,7 +94,7 @@ router.post('/login', (req, res) => {
         })
 })
 
-// GET route for users/current (Private)
+// Create GET route for users/current (Private)
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.json({
         id: req.user.id,
@@ -106,4 +103,5 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
     })
 })
 
+// Export router
 module.exports = router
