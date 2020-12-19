@@ -1,8 +1,8 @@
 // Import external dependencies
 require('dotenv').config()
-const mongoose = require('mongoose')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
+const mongoose = require('mongoose')
 
 // Import internal model
 const User = require('../models/User')

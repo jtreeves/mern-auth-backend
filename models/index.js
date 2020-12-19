@@ -9,13 +9,13 @@ mongoose.connect(process.env.MONGO_URI, {
     useFindAndModify: true
 })
 
-// Set database with mongoose connection object
+// Set database with Mongoose connection object
 const db = mongoose.connection
 
 // Create event listener to fire when the connection opens
 db.once('open', () => {
     // Log to the terminal the host and port of the database
-    console.log(`Connecting to MongoDB at ${db.host} on ${db.port}`)
+    console.log(`Connecting to MongoDB at host ${db.host} on port ${db.port}`)
 })
 
 // Create event listener to fire if an error occurs
