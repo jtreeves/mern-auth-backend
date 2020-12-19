@@ -1,4 +1,4 @@
-# Template for the Backend of a MERN App, Including Authentication
+# Template for the Backend of a MERN App
  This repository features:
  - Mongoose for database storage
  - Passport for password authentication
