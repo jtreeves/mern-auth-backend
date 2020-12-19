@@ -1,3 +1,4 @@
+// Imports
 require('dotenv').config()
 const mongoose = require('mongoose')
 
@@ -12,8 +13,8 @@ mongoose.connect(process.env.MONGO_URI, {
 const db = mongoose.connection
 
 // Set up an event listener that will fire once the connection opens for the database
-// Log to the terminal what host and port we are on
 db.once('open', () => {
+    // Log to the terminal what host and port we are on
     console.log(`Connected to MongoDB at ${db.host} on ${db.port}`)
 })
 

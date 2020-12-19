@@ -28,5 +28,3 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
-
-// Does this need to be different in order to match up with Rome's?
