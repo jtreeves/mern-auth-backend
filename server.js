@@ -5,7 +5,6 @@ const app = express()
 const cors = require('cors')
 const passport = require('passport')
 require('./config/passport')(passport)
-const PORT = process.env.PORT || 8000
 
 // Import internal controller
 const users = require('./controllers/users')
@@ -23,7 +22,10 @@ app.get('/', (req, res) => {
 // Use controller
 app.use('/controllers/users', users)
 
+// Create port
+const PORT = process.env.PORT || 8000
+
 // Listen
 app.listen(PORT, () => {
-    console.log(`Server is listening on port: ${PORT}`)
+    console.log(`Listening on PORT ${PORT}`)
 })
