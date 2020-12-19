@@ -16,39 +16,41 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 // Create GET route for users/test (Public)
 router.get('/test', (req, res) => {
-    res.json({msg: 'User endpoint OK!'})
+    res.json({msg: 'Viewing the test page for the backend of a MERN app'})
 })
 
 // Create POST route for users/register (Public)
 router.post('/register', (req, res) => {
-    // Find user by email
     db.User
+        // Find user by email
         .findOne({email: req.body.email})
         .then(user => {
-            // If email already exists, send 400 response
             if (user) {
+                // Send 400 response if email already exists
                 return res.status(400).json({msg: 'Email already exists'})
             } else {
-                // Create a new user
+                // Create new user if email does not already exist
                 const newUser = new db.User({
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password
                 })
-                // Salt and hash password, then save new user
+                // Create salt for password
                 bcrypt.genSalt(10, (error, salt) => {
                     if (error) throw Error
+                    // Hash password with salt
                     bcrypt.hash(newUser.password, salt, (error, hash) => {
                         if (error) throw Error
                         // Change password to the hash version
                         newUser.password = hash
+                        // Save new user with hashed password
                         newUser
                             .save()
                             .then(createdUser => {
                                 return res.json(createdUser)
                             })
                             .catch(error => {
-                                console.log(error)
+                                console.log(`NEW USER ERROR: ${error}`)
                             })
                     })
                 })
@@ -58,26 +60,23 @@ router.post('/register', (req, res) => {
 
 // Create POST route for users/login (Public)
 router.post('/login', (req, res) => {
+    // Grab email and password from form
     const email = req.body.email
     const password = req.body.password
-    // Find a user via email
     db.User
+        // Find user by email
         .findOne({email})
         .then(user => {
-            console.log(`LOG USER: ${user}`)
-            // If there is not a user
             if (!user) {
+                // Send 400 response if user does not exist
                 res.status(400).json({msg: 'User not found'})
             } else {
-                // If there is a user in the database
+                // Log in user if user exists
                 bcrypt
                     .compare(password, user.password)
                     .then(isMatch => {
-                        console.log(`LOG ISMATCH: ${isMatch}`)
-                        // Check password for match
                         if (isMatch) {
-                            // If user match, send a JSON Web Token
-                            // Create a token payload
+                            // Create a token payload if match
                             const payload = {
                                 id: user.id,
                                 email: user.email,
@@ -91,6 +90,7 @@ router.post('/login', (req, res) => {
                                 })
                             })
                         } else {
+                            // Send 400 response if no match
                             return res.status(400).json({msg: 'Email or password is incorrect'})
                         }
                     })
