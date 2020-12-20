@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(passport.initialize())
 
 // Use internal controller
-app.use('/controllers/users', users)
+app.use('/users', users)
 
 // Get home route
 app.get('/', (req, res) => {
