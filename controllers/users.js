@@ -14,12 +14,12 @@ const router = express.Router()
 // Create JSON web token
 const JWT_SECRET = process.env.JWT_SECRET
 
-// Create GET route for controllers/users/test (Public)
+// Create GET route for users/test (Public)
 router.get('/test', (req, res) => {
     res.json({msg: 'Viewing the test page for the backend of a MERN app'})
 })
 
-// Create POST route for controllers/users/signup (Public)
+// Create POST route for users/signup (Public)
 router.post('/signup', async (req, res) => {
     try {
         // Find user by email
@@ -59,7 +59,7 @@ router.post('/signup', async (req, res) => {
     }
 })
 
-// Create POST route for controllers/users/login (Public)
+// Create POST route for users/login (Public)
 router.post('/login', async (req, res) => {
     try {
         // Grab email and password from form
@@ -98,7 +98,7 @@ router.post('/login', async (req, res) => {
     }
 })
 
-// Create GET route for controllers/users/current (Private)
+// Create GET route for users/current (Private)
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.json({
         id: req.user.id,
