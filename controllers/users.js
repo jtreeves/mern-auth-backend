@@ -53,44 +53,34 @@ router.post('/signup', async (req, res) => {
 })
 
 // Create POST route for controllers/users/login (Public)
-router.post('/login', (req, res) => {
-    // Grab email and password from form
-    const email = req.body.email
-    const password = req.body.password
-    db.User
-        // Find user by email
-        .findOne({email})
-        .then(user => {
-            if (!user) {
-                // Send 400 response if user does not exist
-                res.status(400).json({msg: 'User not found'})
-            } else {
-                // Log in user if user exists
-                bcrypt
-                    // Check password for match
-                    .compare(password, user.password)
-                    .then(isMatch => {
-                        if (isMatch) {
-                            // Create a token payload if match
-                            const payload = {
-                                id: user.id,
-                                email: user.email,
-                                name: user.name
-                            }
-                            // Sign token
-                            jwt.sign(payload, JWT_SECRET, {expiresIn: '1h'}, (error, token) => {
-                                res.json({
-                                    success: true,
-                                    token: `Bearer ${token}`
-                                })
-                            })
-                        } else {
-                            // Send 400 response if no match
-                            return res.status(400).json({msg: 'Email or password is incorrect'})
-                        }
+router.post('/login', async (req, res) => {
+    try {
+        const email = req.body.email
+        const password = req.body.password
+        const currentUser = await db.User.findOne({email})
+        if (!currentUser) {
+            res.status(400).json({msg: 'User not found'})
+        } else {
+            const isMatch = await bcrypt.compare(password, currentUser.password)
+            if (isMatch) {
+                const payload = {
+                    id: currentUser.id,
+                    email: currentUser.email,
+                    name: currentUser.name
+                }
+                jwt.sign(payload, JWT_SECRET, {expiresIn: '1h'}, (error, token) => {
+                    res.json({
+                        success: true,
+                        token: `Bearer ${token}`
                     })
+                })
+            } else {
+                return res.status(400).json({msg: 'Email or password is incorrect'})
             }
-        })
+        }
+    } catch(error) {
+        console.log(`LOGIN ERROR: ${error}`)
+    }
 })
 
 // Create GET route for controllers/users/current (Private)
