@@ -4,7 +4,6 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const passport = require('passport')
-require('./config/passport')(passport)
 
 // Import internal controller
 const users = require('./controllers/users')
@@ -14,6 +13,7 @@ app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use(passport.initialize())
+require('./config/passport')(passport)
 
 // Use internal controller
 app.use('/users', users)

@@ -50,7 +50,7 @@ router.post('/signup', (req, res) => {
                                 return res.json(createdUser)
                             })
                             .catch(error => {
-                                console.log(`NEW USER ERROR: ${error}`)
+                                console.log(`SIGNUP ERROR: ${error}`)
                             })
                     })
                 })
