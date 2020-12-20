@@ -20,42 +20,36 @@ router.get('/test', (req, res) => {
 })
 
 // Create POST route for controllers/users/signup (Public)
-router.post('/signup', (req, res) => {
-    db.User
-        // Find user by email
-        .findOne({email: req.body.email})
-        .then(user => {
-            if (user) {
-                // Send 400 response if email already exists
-                return res.status(400).json({msg: 'Email already exists'})
-            } else {
-                // Create new user if email does not already exist
-                const newUser = new db.User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password
-                })
-                // Create salt for password
-                bcrypt.genSalt(10, (error, salt) => {
-                    if (error) throw Error
-                    // Hash password with salt
-                    bcrypt.hash(newUser.password, salt, (error, hash) => {
-                        if (error) throw Error
-                        // Change password to the hash version
-                        newUser.password = hash
-                        // Save new user with hashed password
-                        newUser
-                            .save()
-                            .then(createdUser => {
-                                return res.json(createdUser)
-                            })
-                            .catch(error => {
-                                console.log(`SIGNUP ERROR: ${error}`)
-                            })
-                    })
-                })
-            }
+router.post('/signup', async (req, res) => {
+    try {
+        const currentUser = await db.User.findOne({
+            email: req.body.email
         })
+        if (currentUser) {
+            return res.status(400).json({msg: 'Email already exists'})
+        } else {
+            const newUser = new db.User({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            })
+            bcrypt.genSalt(10, (error, salt) => {
+                if (error) throw Error
+                bcrypt.hash(newUser.password, salt, async (error, hash) => {
+                    try {
+                        if (error) throw Error
+                        newUser.password = hash
+                        const createdUser = await newUser.save()
+                        res.status(201).json(createdUser)
+                    } catch(error) {
+                        console.log(`HASHING ERROR: ${error}`)
+                    }
+                })
+            })
+        }
+    } catch(error) {
+        console.log(`SIGNUP ERROR: ${error}`)
+    }
 })
 
 // Create POST route for controllers/users/login (Public)
