@@ -27,10 +27,10 @@ router.post('/signup', async (req, res) => {
             email: req.body.email
         })
         if (currentUser) {
-            // Send 400 response if email already exists
-            return res.status(400).json({msg: 'Email already exists'})
+            // Send 400 response if email already in use
+            return res.status(400).json({msg: 'Email already in use'})
         } else {
-            // Create new user if email does not already exist
+            // Create new user if email not already in use
             const newUser = new db.User({
                 name: req.body.name,
                 email: req.body.email,
@@ -90,7 +90,7 @@ router.post('/login', async (req, res) => {
                 })
             } else {
                 // Send 400 response if no match
-                return res.status(400).json({msg: 'Email or password is incorrect'})
+                return res.status(400).json({msg: 'Password is incorrect'})
             }
         }
     } catch(error) {
