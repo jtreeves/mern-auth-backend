@@ -27,7 +27,7 @@ router.post('/signup', (req, res) => {
         .then(user => {
             if (user) {
                 // Send 400 response if email already exists
-                return res.json({msg: 'Email already exists'})
+                return res.status(400).json({msg: 'Email already exists'})
             } else {
                 // Create new user if email does not already exist
                 const newUser = new db.User({
@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
         .then(user => {
             if (!user) {
                 // Send 400 response if user does not exist
-                res.json({msg: 'User not found'})
+                res.status(400).json({msg: 'User not found'})
             } else {
                 // Log in user if user exists
                 bcrypt
@@ -92,7 +92,7 @@ router.post('/login', (req, res) => {
                             })
                         } else {
                             // Send 400 response if no match
-                            return res.json({msg: 'Email or password is incorrect'})
+                            return res.status(400).json({msg: 'Email or password is incorrect'})
                         }
                     })
             }
