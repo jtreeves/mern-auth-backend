@@ -22,23 +22,30 @@ router.get('/test', (req, res) => {
 // Create POST route for controllers/users/signup (Public)
 router.post('/signup', async (req, res) => {
     try {
+        // Find user by email
         const currentUser = await db.User.findOne({
             email: req.body.email
         })
         if (currentUser) {
+            // Send 400 response if email already exists
             return res.status(400).json({msg: 'Email already exists'})
         } else {
+            // Create new user if email does not already exist
             const newUser = new db.User({
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password
             })
+            // Create salt for password
             bcrypt.genSalt(10, (error, salt) => {
                 if (error) throw Error
+                // Hash password with salt
                 bcrypt.hash(newUser.password, salt, async (error, hash) => {
                     try {
                         if (error) throw Error
+                        // Change password to the hash version
                         newUser.password = hash
+                        // Save new user with hashed password
                         const createdUser = await newUser.save()
                         res.status(201).json(createdUser)
                     } catch(error) {
@@ -55,19 +62,26 @@ router.post('/signup', async (req, res) => {
 // Create POST route for controllers/users/login (Public)
 router.post('/login', async (req, res) => {
     try {
+        // Grab email and password from form
         const email = req.body.email
         const password = req.body.password
+        // Find user by email
         const currentUser = await db.User.findOne({email})
         if (!currentUser) {
+            // Send 400 response if user does not exist
             res.status(400).json({msg: 'User not found'})
         } else {
+            // Log in user if user exists
             const isMatch = await bcrypt.compare(password, currentUser.password)
+            // Check password for match
             if (isMatch) {
+                // Create a token payload if match
                 const payload = {
                     id: currentUser.id,
                     email: currentUser.email,
                     name: currentUser.name
                 }
+                // Sign token to finalize log in
                 jwt.sign(payload, JWT_SECRET, {expiresIn: '1h'}, (error, token) => {
                     res.json({
                         success: true,
@@ -75,6 +89,7 @@ router.post('/login', async (req, res) => {
                     })
                 })
             } else {
+                // Send 400 response if no match
                 return res.status(400).json({msg: 'Email or password is incorrect'})
             }
         }
