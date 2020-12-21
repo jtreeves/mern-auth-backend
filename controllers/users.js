@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
                     email: currentUser.email,
                     name: currentUser.name
                 }
-                // Sign token to finalize log in
+                // Sign token to finalize login
                 jwt.sign(payload, JWT_SECRET, {expiresIn: '1h'}, (error, token) => {
                     res.json({
                         success: true,
